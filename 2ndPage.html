@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <title>Document</title>
+ <script type="text/javascript">
+    	function readImage(element) {
+  var file = document.getElementById("file1").files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    $.ajax({
+      url: "https://svimsp1.cognitiveservices.azure.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=emotion&returnFaceLandmarks=false&recognitionModel=recognition_03&returnRecognitionModel=false&detectionModel=detection_01&faceIdTimeToLive=86400",
+      data: reader.result,
+      processData: false,
+      ContentType: 'application/octet-stream',
+      headers: {
+      	'Content-Type': 'application/octet-stream',
+        'Ocp-Apim-Subscription-Key': '20ac5734ab164ec9b08a750b9d7eea35'
+      },
+      type: 'POST',
+      success: function(response) {
+      
+       let faceid="<th>"+response[0].faceId+"</th>"
+       let top1="<td>"+response[0].faceAttributes.emotion.anger+"</td>"
+       let l1="<td>"+response[0].faceAttributes.emotion.contempt+"</td>"
+       let h1="<td>"+response[0].faceAttributes.emotion.disgust+"</td>"
+       let w1="<td>"+response[0].faceAttributes.emotion.fear+"</td>"
+      // alert(response[0].faceId)
+       let a1="<td>"+response[0].faceAttributes.emotion.happiness+"</td>"
+        let b1="<td>"+response[0].faceAttributes.emotion.neutral+"</td>"
+         let c1="<td>"+response[0].faceAttributes.emotion.sadness+"</td>"
+          let d1="<td>"+response[0].faceAttributes.emotion.surprise+"</td>"
+document.getElementById('rr').innerHTML=faceid+top1+l1+w1+h1+a1+b1+c1+d1
+let top=response[0].faceAttributes.emotion.anger
+let l=response[0].faceAttributes.emotion.contempt
+let h=response[0].faceAttributes.emotion.disgust
+let w=response[0].faceAttributes.emotion.fear
+let a=response[0].faceAttributes.emotion.happiness
+let b=response[0].faceAttributes.emotion.neutral
+let c=response[0].faceAttributes.emotion.sadness
+let d=response[0].faceAttributes.emotion.surprise
+if(top>l && top>h && top>w && top>a && top>b && top>c && top>d  ){
+	document.getElementById('m').innerHTML="anger"
+}
+if(l>top && l>h && l>w && l>a && l>b && l>c && l>d  ){
+	document.getElementById('m').innerHTML="contempt"
+}
+
+if(h>l && h>top && h>w && h>a && h>b && h>c && h>d  ){
+	document.getElementById('m').innerHTML="disgust"
+}
+
+if(w>l && w>h && w>top && w>a && w>b && w>c && w>d  ){
+	document.getElementById('m').innerHTML="fear"
+}
+
+
+if(a>l && a>h && a>w && a>top && a>b && a>c && a>d  ){
+	document.getElementById('m').innerHTML="happiness"
+}
+
+if(b>l && b>h && b>w && b>a && b>top && b>c && b>d  ){
+	//alert('fkmde')
+	document.getElementById('m').innerHTML="neutral"
+}
+
+if(c>l && c>h && c>w && c>a && c>b && c>top && c>d  ){
+	document.getElementById('m').innerHTML="sadness"
+}
+
+if(d>l && d>h && d>w && d>a && d>b && d>c && d>top  ){
+	document.getElementById('m').innerHTML="surprise"
+}
+
+console.log(messa)
+      
+      },
+      error: function(error) {
+        alert('error: ' + error);
+      }
+    });
+  }
+  reader.readAsArrayBuffer(file);
+}
+    </script>
+    <script>
+             function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .btn{
+            border: 1px solid rgb(114, 9, 9);
+            background: none;
+            background-color: rgb(114, 9, 9);
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #fff;
+            transition: 0.8s;
+        }
+        .row{
+            padding-top: 20px;
+
+        }
+        .btn:hover{
+            background-color: rgba(0,0,0,0.75);
+            color: #fff;
+        }
+        .file-upload-button{
+            padding-top: 20px;
+        }
+        .head-area{
+            text-align: center;
+        }
+        .container{
+            padding-top: 100px;
+            padding-left: 60px;
+            padding-right: 60px;
+        }
+        .file-upload-wrap{
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        img{
+            padding-top: 20px;
+            max-width:180px;
+        }
+        input[type=file]{
+        padding:10px;
+        background:#2d2d2d;
+        color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image">
+        <div class="form">
+            <div class="container">
+                <div class="head-area mb-4">
+                    <h1><strong>Let's analysis the emotion</strong></h1>
+                    <hr>
+                </div>
+                <div>
+                    <img id="blah" src="http://placehold.it/180" alt="your image" />
+                </div>
+                <div class="row file">
+                    <div class="col-md-6">
+                        <div class="file-upload-wrap">
+                            <input type="file" id="file1" class="file-upload" onchange="readURL(this);"  />
+                            
+                        </div>
+                        <div class="file-upload-button">
+                           <button class="btn" onclick="readImage();">Submit</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="file-upload-wrapper">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">anger</th>
+                                    <th scope="col">contempt</th>
+                                    <th scope="col">disgust</th>
+                                    <th scope="col">fear</th>
+                                     <th scope="col">happiness</th>
+                                      <th scope="col">neutral</th>
+                                       <th scope="col">sadness</th>
+                                        <th scope="col">surprise</th>
+
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr id="rr">
+                                   
+                                  </tr>
+                                  
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                <span> Detected Emotion is </span>    <span id='m'></span>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+</body>
+</html>
